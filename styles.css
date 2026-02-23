@@ -1,0 +1,281 @@
+:root {
+  --bg: #f4f7f1;
+  --panel: #ffffff;
+  --text: #10210f;
+  --muted: #4a5f49;
+  --accent: #1f7a4d;
+  --accent-strong: #155937;
+  --stroke: #d4e3d2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top right, #e6f2dd 0%, var(--bg) 52%, #eff5ea 100%);
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.88);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(4px);
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.top-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  border: 1px solid var(--stroke);
+  background: #fff;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+}
+
+.nav-btn.is-active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.app-shell {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(10, 25, 10, 0.06);
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.meta {
+  color: var(--muted);
+}
+
+.tools-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.tool-tile {
+  border: 1px dashed var(--stroke);
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: #fbfdf9;
+}
+
+.timer-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.runtime-controls {
+  align-items: center;
+}
+
+.timer-headline {
+  display: flex;
+  gap: 1.2rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.clock {
+  margin: 0;
+  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.clock.subdued {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.progress-wrap {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: #e3eee1;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2f8a58 0%, #1f7a4d 100%);
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+select,
+input {
+  border: 1px solid var(--stroke);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  min-height: 42px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+}
+
+#checkpoint-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.checkpoint-row {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: minmax(180px, 1fr) 110px 88px auto;
+  align-items: center;
+}
+
+.checkpoint-row.is-passed {
+  background: #f6fbf5;
+  border: 1px solid #d7e8d6;
+  border-radius: 10px;
+  padding: 0.4rem;
+}
+
+.checkpoint-status {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.checkpoint-actions {
+  margin-top: 0.65rem;
+}
+
+.primary-btn,
+.ghost-btn {
+  border-radius: 8px;
+  border: 1px solid var(--stroke);
+  padding: 0.55rem 0.75rem;
+  min-height: 42px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.primary-btn {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.primary-btn:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.ghost-btn {
+  background: #fff;
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .checkpoint-row {
+    grid-template-columns: minmax(150px, 1fr) 100px 78px auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .top-nav {
+    width: 100%;
+  }
+
+  .nav-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .app-shell {
+    padding-inline: 0.75rem;
+  }
+
+  .card {
+    padding: 0.85rem;
+  }
+
+  .timer-headline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .timer-controls > * {
+    flex: 1 1 100%;
+  }
+
+  .timer-controls button {
+    width: 100%;
+  }
+
+  .timer-controls label {
+    width: 100%;
+  }
+
+  .checkpoint-row {
+    grid-template-columns: 1fr;
+    padding: 0.55rem;
+    border: 1px solid var(--stroke);
+    border-radius: 10px;
+    background: #fcfefb;
+  }
+
+  .checkpoint-status {
+    font-size: 0.82rem;
+  }
+}
