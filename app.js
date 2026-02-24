@@ -2,6 +2,7 @@ import { routes } from './src/router.js';
 
 const app = document.querySelector('#app');
 const navButtons = document.querySelectorAll('.nav-btn');
+const brandLink = document.querySelector('.brand-link');
 let activeCleanup = null;
 
 function render(route) {
@@ -26,5 +27,11 @@ navButtons.forEach((button) => {
     render(button.dataset.route);
   });
 });
+
+if (brandLink) {
+  brandLink.addEventListener('click', () => {
+    render(brandLink.dataset.route || 'landing');
+  });
+}
 
 render('landing');
