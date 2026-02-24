@@ -177,6 +177,26 @@ body {
   animation-delay: 0.6s;
 }
 
+.icon-stopwatch .icon-ring {
+  animation-delay: 0.1s;
+}
+
+.icon-scoreboard .icon-ring {
+  animation-delay: 0.3s;
+}
+
+.icon-notes .icon-ring {
+  animation-delay: 0.5s;
+}
+
+.icon-roster .icon-ring {
+  animation-delay: 0.7s;
+}
+
+.icon-checklist .icon-ring {
+  animation-delay: 0.9s;
+}
+
 @keyframes draw {
   0% {
     stroke-dashoffset: 300;

@@ -7,6 +7,11 @@ export function mountPlaceholderHelpersView(container) {
         <article class="helper-tile"><strong>Stopwatch</strong><br />Placeholder</article>
         <article class="helper-tile"><strong>Scoreboard</strong><br />Placeholder</article>
         <article class="helper-tile"><strong>Match Notes</strong><br />Placeholder</article>
+        <article class="helper-tile"><strong>Carpool</strong><br />Placeholder</article>
+        <article class="helper-tile"><strong>Candy Rotate</strong><br />Placeholder</article>
+        <article class="helper-tile"><strong>Timetable</strong><br />Placeholder</article>
+        <article class="helper-tile"><strong>Roster</strong><br />Placeholder</article>
+        <article class="helper-tile"><strong>Checklist</strong><br />Placeholder</article>
       </div>
     </section>
   `;
