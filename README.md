@@ -1,6 +1,6 @@
 # Roland Helper
 
-Lightweight scaffold for a multi-tool website.
+Lightweight scaffold for a multi-helper website.
 
 ## Run locally
 
@@ -26,10 +26,10 @@ node --test tests/timer-state.test.mjs
 - `tests/timer-state.test.mjs`: automated state logic checks
 - `app.js`: app bootstrap and route activation
 - `src/router.js`: route registry
-- `src/tools/timer/templates.js`: timer presets (includes Footy template)
-- `src/tools/timer/state.js`: timer state model and checkpoint operations
-- `src/tools/timer/view.js`: timer UI + runtime engine + in-app reminders + browser notifications + sound alerts
-- `src/tools/placeholders/view.js`: placeholder tool grid
+- `src/helpers/timer/templates.js`: timer presets (includes Footy template)
+- `src/helpers/timer/state.js`: timer state model and checkpoint operations
+- `src/helpers/timer/view.js`: timer UI + runtime engine + in-app reminders + browser notifications + sound alerts
+- `src/helpers/placeholders/view.js`: placeholder helper grid
 
 ## Next step
 

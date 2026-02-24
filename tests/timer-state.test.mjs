@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { TIMER_TEMPLATES } from '../src/tools/timer/templates.js';
-import { addCheckpoint, applyTemplate, createState, removeCheckpoint, updateCheckpoint } from '../src/tools/timer/state.js';
+import { TIMER_TEMPLATES } from '../src/helpers/timer/templates.js';
+import { addCheckpoint, applyTemplate, createState, removeCheckpoint, updateCheckpoint } from '../src/helpers/timer/state.js';
 
 test('createState uses default template when id is omitted', () => {
   const state = createState();

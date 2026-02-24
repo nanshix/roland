@@ -4,8 +4,8 @@
 - `index.html` is the app shell and navigation entry point.
 - `styles.css` holds shared design tokens and responsive layout rules.
 - `app.js` bootstraps the app and mounts routes.
-- `src/router.js` maps route names to tool views.
-- `src/tools/` contains individual tools. Timer logic lives in `src/tools/timer/` (`templates.js`, `state.js`, `view.js`). Placeholder UI lives in `src/tools/placeholders/`.
+- `src/router.js` maps route names to helper views.
+- `src/helpers/` contains individual helpers. Timer logic lives in `src/helpers/timer/` (`templates.js`, `state.js`, `view.js`). Placeholder UI lives in `src/helpers/placeholders/`.
 - `tests/` contains Node test files (currently `tests/timer-state.test.mjs`).
 - `QA_CHECKLIST.md` is the manual QA guide.
 
@@ -27,7 +27,7 @@
 ## Testing Guidelines
 - Framework: Node’s built-in test runner (`node:test`) with `assert/strict`.
 - Test naming: descriptive phrases matching behavior (see `tests/timer-state.test.mjs`).
-- Add tests for state mutations in `src/tools/timer/state.js` or new tool logic.
+- Add tests for state mutations in `src/helpers/timer/state.js` or new helper logic.
 
 ## Commit & Pull Request Guidelines
 - Commit history is minimal (single initial commit), so no strict convention is established.

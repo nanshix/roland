@@ -129,7 +129,7 @@ function render({ timerState, runtime, notifications, audio }) {
 
   return `
     <section class="card timer-card">
-      <h1>Timer Tool</h1>
+      <h1>Timer Helper</h1>
       <p class="meta">Footy template + live timer + browser notification/sound reminders.</p>
 
       <div class="timer-headline">

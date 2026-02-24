@@ -1,9 +1,9 @@
-## Tools Website Plan
+## Helpers Website Plan
 
-1. Build a tools website, starting with a football-themed timer tool.
-2. Keep architecture extensible so more tools can be added later.
+1. Build a helpers website, starting with a football-themed timer helper.
+2. Keep architecture extensible so more helpers can be added later.
 
-## MVP Scope (Timer Tool)
+## MVP Scope (Timer Helper)
 
 1. Provide timer templates, starting with a "Footy" template.
 2. Allow users to create/edit multiple reminder time points.
@@ -22,7 +22,7 @@
 
 ## Delivery Plan
 
-1. Build MVP timer tool.
+1. Build MVP timer helper.
 2. Test on desktop and mobile browsers.
 3. Prepare repository and push to:
    - `git@github.sc156:nanshix/rolandhou.git`
@@ -30,8 +30,8 @@
 ## Execution Checklist (Order + Estimates)
 
 1. Project setup and structure (0.5 day)
-   - Initialize app scaffold and folder conventions for future tools.
-   - Add base routing/nav with a placeholder section for upcoming tools.
+   - Initialize app scaffold and folder conventions for future helpers.
+   - Add base routing/nav with a placeholder section for upcoming helpers.
 2. Timer data model and template system (0.5 day)
    - Define timer state shape (duration, checkpoints, status).
    - Implement "Footy" template as default preset.
