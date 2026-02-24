@@ -64,6 +64,65 @@ body {
   padding: 1rem 1rem 2rem;
 }
 
+.is-landing .top-nav {
+  display: none;
+}
+
+.landing {
+  min-height: calc(100vh - 96px);
+  display: grid;
+  place-items: center;
+  padding: 2rem 0 3rem;
+}
+
+.landing-card {
+  max-width: 720px;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(145deg, #ffffff 0%, #f1f7ec 100%);
+  border: 1px solid var(--stroke);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(17, 38, 17, 0.12);
+}
+
+.landing-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+.landing-subhead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 0 auto 2rem;
+  max-width: 560px;
+}
+
+.cta-btn {
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border-radius: 999px;
+  border: 0;
+  background: linear-gradient(120deg, var(--accent) 0%, #1ea86a 100%);
+  color: #fff;
+  box-shadow: 0 16px 30px rgba(23, 122, 77, 0.32);
+  cursor: pointer;
+}
+
+.cta-btn:hover {
+  background: linear-gradient(120deg, var(--accent-strong) 0%, #148c56 100%);
+}
+
+.landing-note {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 .card {
   background: var(--panel);
   border: 1px solid var(--stroke);

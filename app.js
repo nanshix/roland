@@ -10,7 +10,9 @@ function render(route) {
   }
 
   const mountView = routes[route] || routes.timer;
-  activeCleanup = mountView(app) || null;
+  const navigate = (nextRoute) => render(nextRoute);
+  activeCleanup = mountView(app, navigate) || null;
+  document.body.classList.toggle('is-landing', route === 'landing');
 
   navButtons.forEach((button) => {
     const isActive = button.dataset.route === route;
@@ -25,4 +27,4 @@ navButtons.forEach((button) => {
   });
 });
 
-render('timer');
+render('landing');
