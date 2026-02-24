@@ -2,6 +2,7 @@ import { DEFAULT_TEMPLATE_ID, TIMER_TEMPLATES } from './templates.js';
 import { addCheckpoint, applyTemplate, createState, removeCheckpoint, updateCheckpoint } from './state.js';
 
 const TICK_MS = 250;
+const STORAGE_KEY = 'roland-helper-timer-state';
 
 function escapeHtmlAttr(value) {
   return String(value)
@@ -151,6 +152,38 @@ function supportsNotifications() {
   return typeof window !== 'undefined' && 'Notification' in window;
 }
 
+function loadPersistedState() {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return null;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') {
+      return null;
+    }
+    return parsed;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function persistState(payload) {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch (_error) {
+    // Ignore storage failures.
+  }
+}
+
 function render({ timerState, runtime, notifications, audio }) {
   const elapsedMs = runtime.getElapsedMs();
   const totalMs = timerState.totalSeconds * 1000;
@@ -264,12 +297,46 @@ export function mountTimerView(container) {
   const runtime = createRuntime();
   const notifications = createNotificationsState();
   const audio = createAudioEngine();
+  const persisted = loadPersistedState();
+
+  if (persisted?.timerState) {
+    timerState = persisted.timerState;
+  }
+
+  if (persisted?.runtime) {
+    runtime.status = persisted.runtime.status || runtime.status;
+    runtime.baseElapsedMs = Number(persisted.runtime.baseElapsedMs) || 0;
+    runtime.startEpochMs = Number(persisted.runtime.startEpochMs) || null;
+    runtime.firedCheckpointIds = new Set(persisted.runtime.firedCheckpointIds || []);
+    runtime.lastReminderMessage = persisted.runtime.lastReminderMessage || runtime.lastReminderMessage;
+  }
+
+  if (runtime.status === 'running' && !runtime.startEpochMs) {
+    runtime.startEpochMs = Date.now();
+  }
 
   function clearTick() {
     if (runtime.intervalId) {
       window.clearInterval(runtime.intervalId);
       runtime.intervalId = null;
     }
+  }
+
+  function snapshotState() {
+    return {
+      timerState,
+      runtime: {
+        status: runtime.status,
+        baseElapsedMs: runtime.baseElapsedMs,
+        startEpochMs: runtime.startEpochMs,
+        firedCheckpointIds: Array.from(runtime.firedCheckpointIds),
+        lastReminderMessage: runtime.lastReminderMessage,
+      },
+    };
+  }
+
+  function saveState() {
+    persistState(snapshotState());
   }
 
   function refreshNotificationPermission() {
@@ -347,6 +414,7 @@ export function mountTimerView(container) {
       runtime.lastReminderMessage = 'Timer started.';
       clearTick();
       runtime.intervalId = window.setInterval(paint, TICK_MS);
+      saveState();
       paint();
     });
 
@@ -355,6 +423,7 @@ export function mountTimerView(container) {
       runtime.startEpochMs = null;
       runtime.status = 'paused';
       clearTick();
+      saveState();
       paint();
     });
 
@@ -363,6 +432,7 @@ export function mountTimerView(container) {
       runtime.startEpochMs = Date.now();
       clearTick();
       runtime.intervalId = window.setInterval(paint, TICK_MS);
+      saveState();
       paint();
     });
 
@@ -373,22 +443,7 @@ export function mountTimerView(container) {
       runtime.firedCheckpointIds.clear();
       runtime.lastReminderMessage = 'Timer reset.';
       clearTick();
-      paint();
-    });
-
-    elapsedMinutesInput.addEventListener('change', () => {
-      const currentElapsedMs = runtime.getElapsedMs();
-      const desiredMinutes = Number(elapsedMinutesInput.value);
-      const safeMinutes = Number.isFinite(desiredMinutes) ? Math.max(0, desiredMinutes) : 0;
-      const secondsMs = currentElapsedMs % 60000;
-      runtime.baseElapsedMs = safeMinutes * 60000 + secondsMs;
-      runtime.startEpochMs = runtime.status === 'running' ? Date.now() : null;
-      runtime.firedCheckpointIds = new Set(
-        timerState.checkpoints
-          .filter((checkpoint) => checkpoint.seconds * 1000 <= runtime.baseElapsedMs)
-          .map((checkpoint) => checkpoint.id),
-      );
-      runtime.lastReminderMessage = `Elapsed time adjusted to ${formatMillis(runtime.baseElapsedMs)}.`;
+      saveState();
       paint();
     });
 
@@ -403,6 +458,7 @@ export function mountTimerView(container) {
       } catch (_error) {
         runtime.lastReminderMessage = 'Notification permission request failed.';
       }
+      saveState();
       paint();
     });
 
@@ -414,6 +470,7 @@ export function mountTimerView(container) {
       if (enabled) {
         await audio.playReminderTone();
       }
+      saveState();
       paint();
     });
 
@@ -429,12 +486,14 @@ export function mountTimerView(container) {
       runtime.firedCheckpointIds.clear();
       runtime.lastReminderMessage = `Template switched to ${TIMER_TEMPLATES[event.target.value].name}.`;
       clearTick();
+      saveState();
       paint();
     });
 
     addButton.addEventListener('click', () => {
       addCheckpoint(timerState);
       syncFiredCheckpointSet();
+      saveState();
       paint();
     });
 
@@ -442,6 +501,7 @@ export function mountTimerView(container) {
       button.addEventListener('click', () => {
         removeCheckpoint(timerState, button.dataset.removeId);
         syncFiredCheckpointSet();
+        saveState();
         paint();
       });
     });
@@ -453,13 +513,32 @@ export function mountTimerView(container) {
 
       labelInput.addEventListener('input', () => {
         updateCheckpoint(timerState, id, { label: labelInput.value.trim() || 'Checkpoint' });
+        saveState();
       });
 
       minuteInput.addEventListener('change', () => {
         updateCheckpoint(timerState, id, { seconds: Number(minuteInput.value) * 60 });
         syncFiredCheckpointSet();
+        saveState();
         paint();
       });
+    });
+
+    elapsedMinutesInput.addEventListener('change', () => {
+      const currentElapsedMs = runtime.getElapsedMs();
+      const desiredMinutes = Number(elapsedMinutesInput.value);
+      const safeMinutes = Number.isFinite(desiredMinutes) ? Math.max(0, desiredMinutes) : 0;
+      const secondsMs = currentElapsedMs % 60000;
+      runtime.baseElapsedMs = safeMinutes * 60000 + secondsMs;
+      runtime.startEpochMs = runtime.status === 'running' ? Date.now() : null;
+      runtime.firedCheckpointIds = new Set(
+        timerState.checkpoints
+          .filter((checkpoint) => checkpoint.seconds * 1000 <= runtime.baseElapsedMs)
+          .map((checkpoint) => checkpoint.id),
+      );
+      runtime.lastReminderMessage = `Elapsed time adjusted to ${formatMillis(runtime.baseElapsedMs)}.`;
+      saveState();
+      paint();
     });
   }
 
@@ -470,10 +549,14 @@ export function mountTimerView(container) {
   }
 
   document.addEventListener('visibilitychange', handleVisibilityChange);
+  if (runtime.status === 'running' && runtime.startEpochMs) {
+    runtime.intervalId = window.setInterval(paint, TICK_MS);
+  }
   paint();
 
   return () => {
     document.removeEventListener('visibilitychange', handleVisibilityChange);
     clearTick();
+    saveState();
   };
 }
