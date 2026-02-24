@@ -11,7 +11,7 @@
 7. Start timer and confirm checkpoint inputs/buttons are disabled while running.
 8. Set one checkpoint to `0` minutes, click `Start`; confirm reminder is triggered immediately.
 9. Click `Enable Notifications`, grant permission, trigger checkpoint, and confirm browser notification appears.
-10. Click `Enable Sound` then `Test Sound`; confirm audible tone. Trigger a checkpoint and confirm tone plays.
+10. Confirm sound is enabled by default, then click `Test Sound`; confirm audible tone. Trigger a checkpoint and confirm tone plays.
 11. Switch to `More Helpers` while timer is running; return to `Timer` and confirm no runaway clock/duplicate intervals.
 
 ## Mobile (iOS Safari + Android Chrome)

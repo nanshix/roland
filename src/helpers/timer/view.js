@@ -62,9 +62,11 @@ function buildCheckpointRows(checkpoints, elapsedMs, firedCheckpointIds, isEdita
 }
 
 function createAudioEngine() {
+  const hasAudioContext = Boolean(window.AudioContext || window.webkitAudioContext);
+
   return {
     context: null,
-    enabled: false,
+    enabled: hasAudioContext,
     get AudioContextClass() {
       return window.AudioContext || window.webkitAudioContext || null;
     },
@@ -78,20 +80,36 @@ function createAudioEngine() {
         this.context = new this.AudioContextClass();
       }
 
-      if (this.context.state === 'suspended') {
-        await this.context.resume();
+      try {
+        if (this.context.state === 'suspended') {
+          await this.context.resume();
+        }
+      } catch (_error) {
+        // Keep enabled; some browsers require a gesture before resume.
       }
 
       this.enabled = true;
       return true;
     },
     async playReminderTone() {
-      if (!this.enabled || !this.context) {
+      if (!this.enabled) {
         return;
       }
 
-      if (this.context.state === 'suspended') {
-        await this.context.resume();
+      if (!this.context) {
+        if (!this.AudioContextClass) {
+          this.enabled = false;
+          return;
+        }
+        this.context = new this.AudioContextClass();
+      }
+
+      try {
+        if (this.context.state === 'suspended') {
+          await this.context.resume();
+        }
+      } catch (_error) {
+        return;
       }
 
       const now = this.context.currentTime;
@@ -126,10 +144,11 @@ function render({ timerState, runtime, notifications, audio }) {
 
   const notificationsSupported = supportsNotifications();
   const notificationStatus = notificationsSupported ? notifications.permission : 'unsupported';
+  const soundLabel = audio.enabled ? 'Sound Enabled' : 'Enable Sound';
 
   return `
     <section class="card timer-card">
-      <h1>Timer Helper</h1>
+      <h1>Timer</h1>
       <p class="meta">Footy template + live timer + browser notification/sound reminders.</p>
 
       <div class="timer-headline">
@@ -158,7 +177,7 @@ function render({ timerState, runtime, notifications, audio }) {
         <h2>Alerts</h2>
         <div class="timer-controls runtime-controls">
           <button class="ghost-btn" id="enable-notifications-btn" type="button" ${notificationsSupported && notificationStatus !== 'granted' ? '' : 'disabled'}>Enable Notifications</button>
-          <button class="ghost-btn" id="enable-sound-btn" type="button" ${audio.enabled ? 'disabled' : ''}>Enable Sound</button>
+          <button class="ghost-btn" id="enable-sound-btn" type="button" ${audio.enabled ? 'disabled' : ''}>${soundLabel}</button>
           <button class="ghost-btn" id="test-sound-btn" type="button" ${audio.enabled ? '' : 'disabled'}>Test Sound</button>
         </div>
         <p class="meta">Notifications: <strong>${escapeHtmlAttr(notificationStatus)}</strong> | Sound: <strong>${audio.enabled ? 'enabled' : 'disabled'}</strong></p>

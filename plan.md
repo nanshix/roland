@@ -1,9 +1,9 @@
 ## Helpers Website Plan
 
-1. Build a helpers website, starting with a football-themed timer helper.
+1. Build a helpers website, starting with a football-themed timer.
 2. Keep architecture extensible so more helpers can be added later.
 
-## MVP Scope (Timer Helper)
+## MVP Scope (Timer)
 
 1. Provide timer templates, starting with a "Footy" template.
 2. Allow users to create/edit multiple reminder time points.
@@ -22,7 +22,7 @@
 
 ## Delivery Plan
 
-1. Build MVP timer helper.
+1. Build MVP timer.
 2. Test on desktop and mobile browsers.
 3. Prepare repository and push to:
    - `git@github.sc156:nanshix/rolandhou.git`
