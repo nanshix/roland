@@ -9,8 +9,10 @@ export function mountLandingView(container, navigate) {
         <button class="landing-card" data-route="timer" type="button" role="listitem">
           <span class="landing-icon icon-footy" aria-hidden="true">
             <svg viewBox="0 0 120 120" focusable="false">
-              <circle class="icon-ring" cx="60" cy="60" r="46" />
-              <path class="icon-ball" d="M60 36l16 6 6 16-6 16-16 6-16-6-6-16 6-16 16-6z" />
+              <circle class="icon-ring" cx="60" cy="60" r="38" />
+              <path class="icon-line" d="M60 24c-12 6-18 18-18 30s6 24 18 30c12-6 18-18 18-30s-6-24-18-30z" />
+              <path class="icon-line" d="M60 24l16 6 8 16-8 20-16 6-16-6-8-20 8-16 16-6z" />
+              <path class="icon-line" d="M50 44l-12 6M70 44l12 6M50 76l-12-6M70 76l12-6" />
             </svg>
           </span>
           <span class="landing-card-title">Footy Timer</span>
@@ -31,7 +33,8 @@ export function mountLandingView(container, navigate) {
           <span class="landing-icon icon-scoreboard" aria-hidden="true">
             <svg viewBox="0 0 120 120" focusable="false">
               <rect class="icon-ring" x="24" y="30" width="72" height="48" rx="10" />
-              <path class="icon-line" d="M44 54h12M64 54h12" />
+              <path class="icon-line" d="M40 56h18M62 56h18" />
+              <path class="icon-line" d="M46 46l6-6 6 6M72 46l6-6 6 6" />
             </svg>
           </span>
           <span class="landing-card-title">Scoreboard</span>
@@ -50,8 +53,9 @@ export function mountLandingView(container, navigate) {
         <button class="landing-card" data-route="coming-soon" type="button" role="listitem">
           <span class="landing-icon icon-carpool" aria-hidden="true">
             <svg viewBox="0 0 120 120" focusable="false">
-              <rect class="icon-ring" x="18" y="36" width="84" height="36" rx="12" />
-              <path class="icon-line" d="M34 78h52" />
+              <path class="icon-ring" d="M28 68h64c6 0 10-4 10-10v-10c0-6-4-10-10-10H74l-8-10H46l-8 10H28c-6 0-10 4-10 10v10c0 6 4 10 10 10z" />
+              <path class="icon-line" d="M34 68v6M86 68v6" />
+              <path class="icon-line" d="M40 54h40" />
             </svg>
           </span>
           <span class="landing-card-title">Carpool</span>
@@ -60,9 +64,10 @@ export function mountLandingView(container, navigate) {
         <button class="landing-card" data-route="coming-soon" type="button" role="listitem">
           <span class="landing-icon icon-candy" aria-hidden="true">
             <svg viewBox="0 0 120 120" focusable="false">
-              <path class="icon-ring" d="M34 60c0-14 12-26 26-26s26 12 26 26-12 26-26 26-26-12-26-26z" />
-              <path class="icon-line" d="M60 38c10 0 18 8 18 18s-8 18-18 18-18-8-18-18 8-18 18-18z" />
-              <path class="icon-line" d="M60 46c6 0 12 6 12 12s-6 12-12 12-12-6-12-12 6-12 12-12z" />
+              <circle class="icon-ring" cx="60" cy="60" r="28" />
+              <circle class="icon-line" cx="60" cy="60" r="6" />
+              <path class="icon-line" d="M60 32v20M60 68v20M32 60h20M68 60h20" />
+              <path class="icon-line" d="M43 43l10 10M77 77l-10-10M43 77l10-10M77 43l-10 10" />
             </svg>
           </span>
           <span class="landing-card-title">Candy Rotate</span>

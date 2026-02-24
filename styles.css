@@ -46,6 +46,12 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  font-family: "Palatino Linotype", "Book Antiqua", "Constantia", serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  position: relative;
+  animation: brandFloat 4s ease-in-out infinite;
 }
 
 .brand-link:focus-visible {
@@ -55,6 +61,33 @@ body {
 
 .brand-link:hover {
   color: var(--accent-strong);
+}
+
+.brand-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(21, 89, 55, 0) 0%, rgba(21, 89, 55, 0.5) 50%, rgba(21, 89, 55, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.brand-link:hover::after,
+.brand-link:focus-visible::after {
+  opacity: 1;
+}
+
+@keyframes brandFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
 }
 
 .top-nav {
@@ -164,6 +197,14 @@ body {
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.icon-candy svg {
+  stroke: #f08a24;
+}
+
+.icon-candy .icon-ring {
+  stroke: #f08a24;
 }
 
 .icon-ring {
