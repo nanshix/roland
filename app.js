@@ -36,7 +36,8 @@ navButtons.forEach((button) => {
 });
 
 if (brandLink) {
-  brandLink.addEventListener('click', () => {
+  brandLink.addEventListener('click', (event) => {
+    event.preventDefault();
     render(brandLink.dataset.route || 'landing');
   });
 }
