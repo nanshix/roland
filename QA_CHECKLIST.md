@@ -2,8 +2,8 @@
 
 ## Desktop (Chrome/Edge/Firefox/Safari)
 
-1. Open `index.html` and confirm the Timer view renders without console errors.
-2. Verify nav switching: `Timer` <-> `More Helpers` works and returns correctly.
+1. Open `index.html` and confirm the Footy Timer view renders without console errors.
+2. Verify nav switching: `Footy Timer` <-> `More Helpers` works and returns correctly.
 3. Click `Start` and confirm elapsed clock and progress bar update continuously.
 4. Click `Pause`, wait 3 seconds, then `Resume`; confirm elapsed time does not jump backward.
 5. Click `Reset`; confirm elapsed returns to `00:00`, progress resets, and checkpoints become pending.
@@ -12,7 +12,7 @@
 8. Set one checkpoint to `0` minutes, click `Start`; confirm reminder is triggered immediately.
 9. Click `Enable Notifications`, grant permission, trigger checkpoint, and confirm browser notification appears.
 10. Confirm sound is enabled by default, then click `Test Sound`; confirm audible tone. Trigger a checkpoint and confirm tone plays.
-11. Switch to `More Helpers` while timer is running; return to `Timer` and confirm no runaway clock/duplicate intervals.
+11. Switch to `More Helpers` while timer is running; return to `Footy Timer` and confirm no runaway clock/duplicate intervals.
 
 ## Mobile (iOS Safari + Android Chrome)
 

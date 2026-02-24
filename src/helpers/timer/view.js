@@ -61,6 +61,23 @@ function buildCheckpointRows(checkpoints, elapsedMs, firedCheckpointIds, isEdita
     .join('');
 }
 
+function buildNextCheckpointLine(checkpoints, elapsedMs, firedCheckpointIds) {
+  if (!checkpoints.length) {
+    return 'No checkpoints configured.';
+  }
+
+  const upcoming = checkpoints.find(
+    (checkpoint) =>
+      !firedCheckpointIds.has(checkpoint.id) && elapsedMs < checkpoint.seconds * 1000,
+  );
+
+  if (!upcoming) {
+    return 'All checkpoints reached.';
+  }
+
+  return `Next checkpoint: ${escapeHtmlAttr(upcoming.label)} at ${formatSeconds(upcoming.seconds)}.`;
+}
+
 function createAudioEngine() {
   const hasAudioContext = Boolean(window.AudioContext || window.webkitAudioContext);
 
@@ -148,13 +165,19 @@ function render({ timerState, runtime, notifications, audio }) {
 
   return `
     <section class="card timer-card">
-      <h1>Timer</h1>
+      <h1>Footy Timer</h1>
       <p class="meta">Footy template + live timer + browser notification/sound reminders.</p>
 
       <div class="timer-headline">
         <div>
           <p class="meta">Elapsed</p>
           <p class="clock">${formatMillis(elapsedMs)}</p>
+          <div class="elapsed-adjust">
+            <label>
+              Minutes
+              <input class="elapsed-minutes" type="number" min="0" step="1" inputmode="numeric" value="${Math.floor(elapsedMs / 60000)}" aria-label="Elapsed minutes" />
+            </label>
+          </div>
         </div>
         <div>
           <p class="meta">Total</p>
@@ -195,6 +218,7 @@ function render({ timerState, runtime, notifications, audio }) {
       <section>
         <h2>Checkpoints</h2>
         <p class="meta">Reminders trigger when elapsed time reaches each checkpoint.</p>
+        <p class="meta checkpoint-next">${buildNextCheckpointLine(timerState.checkpoints, elapsedMs, runtime.firedCheckpointIds)}</p>
         <div id="checkpoint-list">
           ${buildCheckpointRows(timerState.checkpoints, elapsedMs, runtime.firedCheckpointIds, isEditable)}
         </div>
@@ -306,6 +330,7 @@ export function mountTimerView(container) {
 
     const templateSelect = container.querySelector('#template-select');
     const addButton = container.querySelector('#add-checkpoint');
+    const elapsedMinutesInput = container.querySelector('.elapsed-minutes');
     const startButton = container.querySelector('#start-btn');
     const pauseButton = container.querySelector('#pause-btn');
     const resumeButton = container.querySelector('#resume-btn');
@@ -348,6 +373,22 @@ export function mountTimerView(container) {
       runtime.firedCheckpointIds.clear();
       runtime.lastReminderMessage = 'Timer reset.';
       clearTick();
+      paint();
+    });
+
+    elapsedMinutesInput.addEventListener('change', () => {
+      const currentElapsedMs = runtime.getElapsedMs();
+      const desiredMinutes = Number(elapsedMinutesInput.value);
+      const safeMinutes = Number.isFinite(desiredMinutes) ? Math.max(0, desiredMinutes) : 0;
+      const secondsMs = currentElapsedMs % 60000;
+      runtime.baseElapsedMs = safeMinutes * 60000 + secondsMs;
+      runtime.startEpochMs = runtime.status === 'running' ? Date.now() : null;
+      runtime.firedCheckpointIds = new Set(
+        timerState.checkpoints
+          .filter((checkpoint) => checkpoint.seconds * 1000 <= runtime.baseElapsedMs)
+          .map((checkpoint) => checkpoint.id),
+      );
+      runtime.lastReminderMessage = `Elapsed time adjusted to ${formatMillis(runtime.baseElapsedMs)}.`;
       paint();
     });
 
